@@ -1,6 +1,14 @@
 #!/bin/bash
 
+# This script does the following:
+# - Prompts the user for the name of a project using a graphical dialog box.
+# - Validates the input to ensure it only contains alphanumeric characters.
+# - If the project already exists, it opens the project file with VS Code.
+# - If the project doesn't exist, it creates a new shell script with the given name, makes it executable, and opens a new terminal window in the project directory.
+# - If the user cancels the dialog box, the script exits.
+
 validate_project_name() {
+  # Validate that the input is not empty and contains only alphanumeric characters
   if [[ -z "$1" ]] || [[ "$1" =~ [^a-zA-Z0-9] ]]; then
     echo "Invalid project name. Please use only alphanumeric characters."
     return 1
