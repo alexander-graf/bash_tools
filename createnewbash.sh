@@ -7,6 +7,9 @@
 # - If the project doesn't exist, it creates a new shell script with the given name, makes it executable, and opens a new terminal window in the project directory.
 # - If the user cancels the dialog box, the script exits.
 
+# Define the project directory relative to the home directory
+PROJECT_DIR="$HOME/scripting"
+
 validate_project_name() {
   # Validate that the input is not empty and contains only alphanumeric characters
   if [[ -z "$1" ]] || [[ "$1" =~ [^a-zA-Z0-9] ]]; then
@@ -37,8 +40,12 @@ while true; do
 done
 
 # Define the project path
-PROJECT_PATH="/home/alex/scripting/$PROJECT_NAME.sh"
-PROJECT_PATH_FOLDER="/home/alex/scripting/"
+PROJECT_PATH="$PROJECT_DIR/$PROJECT_NAME.sh"
+
+# Check if the project directory exists, if not create it
+if [ ! -d "$PROJECT_DIR" ]; then
+    mkdir -p "$PROJECT_DIR" || { echo "Failed to create directory: $PROJECT_DIR"; exit 1; }
+fi
 
 # Check if the file already exists
 if [ -f "$PROJECT_PATH" ]; then
@@ -49,6 +56,6 @@ else
     touch "$PROJECT_PATH" || { echo "Failed to create file: $PROJECT_PATH"; exit 1; }
     chmod u+x "$PROJECT_PATH" || { echo "Failed to make file executable: $PROJECT_PATH"; exit 1; }
 
-    # Open a new Alacritty terminal and cd into the project directory
-    alacritty --working-directory /home/alex/scripting/ &
+    # Open a new terminal window in the project directory
+    x-terminal-emulator --working-directory "$PROJECT_DIR" &
 fi
